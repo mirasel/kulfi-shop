@@ -35,6 +35,17 @@ export async function register(userData) {
   return data;
 }
 
+export async function resendVerificationLink(token) {
+  const response = await fetch(`${BACKEND_URL}/api/auth/email/resend`, {
+    method: "GET",
+    headers: new Headers({
+      Authorization: `Bearer ${token}`,
+    }),
+  });
+  const data = await response.json();
+  return data;
+}
+
 export async function getAllUsers() {
   const response = await fetch(`${BACKEND_URL}/users`);
   const data = await response.json();

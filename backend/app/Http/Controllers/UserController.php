@@ -90,8 +90,8 @@ class UserController extends Controller {
 
         $user->markEmailAsVerified();
         $user->setVerifyToken();
-
-        return $this->apiResponse('verification Successful', null, Response::HTTP_OK, true);
+        return redirect()->away(env('APP_FRONTEND_URL') . "/verified/$user->id");
+        // return $this->apiResponse('verification Successful', null, Response::HTTP_OK, true);
     }
 
     public function verifyResend() {
@@ -103,9 +103,9 @@ class UserController extends Controller {
             $url = $this->verifyUrl($user, $encryptedToken);
 
             VerifyEmailJob::dispatch($user, $url);
-            return $this->apiResponse('verification Email send successfully', null, Response::HTTP_OK, true);
+            return $this->apiResponse('A fresh verification link has been sent to your email address.', null, Response::HTTP_OK, true);
         } else {
-            return $this->apiResponse('Resend Failed', null, Response::HTTP_UNAUTHORIZED, false);
+            return $this->apiResponse("", null, Response::HTTP_UNAUTHORIZED, false, "Verification Resend Failed");
         }
     }
 
