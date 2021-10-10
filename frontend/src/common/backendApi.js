@@ -12,6 +12,29 @@ export async function login(userData) {
   return data;
 }
 
+export async function logout(token) {
+  const response = await fetch(`${BACKEND_URL}/api/auth/logout`, {
+    method: "POST",
+    headers: new Headers({
+      Authorization: `Bearer ${token}`,
+    }),
+  });
+  const data = await response.json();
+  return data;
+}
+
+export async function register(userData) {
+  const response = await fetch(`${BACKEND_URL}/api/auth/register`, {
+    method: "POST",
+    body: JSON.stringify(userData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await response.json();
+  return data;
+}
+
 export async function getAllUsers() {
   const response = await fetch(`${BACKEND_URL}/users`);
   const data = await response.json();
@@ -34,28 +57,6 @@ export async function getAllUsers() {
   }
 
   return transformedUsers;
-}
-
-export async function addUser(userData) {
-  // const users = await getAllUsers();
-  // const user = users.filter((item) => item.email === userData.email);
-  // if (user.length === 1) {
-  //   throw new Error("This email already exists");
-  // }
-  const response = await fetch(`${BACKEND_URL}/api/v1/user/register`, {
-    method: "POST",
-    body: JSON.stringify(userData),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.errors || "Could not create user.");
-  }
-
-  return null;
 }
 
 export async function getAllPosts() {

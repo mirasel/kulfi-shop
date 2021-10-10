@@ -1,21 +1,29 @@
-import { Switch, Route, NavLink } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import "./App.scss";
 import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import Navbar from "./components/Header/Navbar";
 import Home from "./pages/Home";
+import React from "react";
 
 function App() {
   return (
-    <div className="App">
-      <NavLink to="/login">Login</NavLink>
-      <Switch>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
-    </div>
+    <React.Fragment>
+      <Navbar />
+      <div className="App">
+        <Switch>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/signup">
+            <Register />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </div>
+    </React.Fragment>
   );
 }
 
