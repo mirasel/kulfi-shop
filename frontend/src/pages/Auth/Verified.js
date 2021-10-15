@@ -15,6 +15,8 @@ function Verified() {
       lsetItem("iv", "yes", true);
       auth.setIsVerified(true);
       redirect.push("/");
+    } else {
+      redirect.push("/");
     }
   }, [auth, userId, redirect]);
   return (

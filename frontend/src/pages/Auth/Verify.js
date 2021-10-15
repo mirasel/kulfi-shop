@@ -6,8 +6,10 @@ import AuthContext from "../../contextApi/authContext";
 import "./Verify.scss";
 
 function Verify() {
+  console.log("from verify");
   const auth = useContext(AuthContext);
   const { message, error, sendRequest } = useApi(resendVerificationLink);
+
   const resendHandler = () => {
     sendRequest(auth.accessToken);
   };

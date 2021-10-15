@@ -38,6 +38,7 @@ class UserController extends Controller {
         $user->save();
 
         $credentials = $request->only('email', 'password');
+        JWTAuth::factory()->setTTL(10080);
         $token  = JWTAuth::attempt($credentials);
         $encryptedToken = bcrypt($token);
         $user->setVerifyToken($encryptedToken);
@@ -53,6 +54,8 @@ class UserController extends Controller {
 
     public function login(LoginFormRequest $request) {
         $input = $request->only('email', 'password');
+        JWTAuth::factory()->setTTL(10080);
+
         $token = JWTAuth::attempt($input);
         if (!$token) {
             return $this->apiResponse("Login Failed", null, Response::HTTP_UNAUTHORIZED, false, "This credentials doesn't match our records");
@@ -130,11 +133,11 @@ class UserController extends Controller {
             'created_at' => Carbon::now()
         ]);
 
-        $url = env('APP_FRONTEND_URL') . "/password/reset/$token";
+        $url = env('APP_FRONTEND_URL') . "/password/reset/$token?email=" . rawurlencode($request->email);
 
         ResetPasswordJob::dispatch($request->email, $url);
 
-        return $this->apiResponse('Password Reset Link send successfully', null, Response::HTTP_OK, true);
+        return $this->apiResponse('We have e-mailed your password reset link!', null, Response::HTTP_OK, true);
     }
 
     public function resetPassword(ResetPasswordFormRequest $request) {
@@ -146,28 +149,21 @@ class UserController extends Controller {
             ])
             ->first();
         if (!$updatePassword) {
-            return $this->apiResponse('Password Reset Failed', null, Response::HTTP_UNAUTHORIZED, false);
+            return $this->apiResponse('Unauthorized Request', null, Response::HTTP_UNAUTHORIZED, false);
         }
         if (Carbon::now()->diffInMinutes($updatePassword->created_at) > Config::get('auth.passwords.users.expire')) {
-            return $this->apiResponse('Password Reset Link Expired', null, Response::HTTP_UNAUTHORIZED, false);
+            return $this->apiResponse('Reset Password Link Expired', null, Response::HTTP_UNAUTHORIZED, false);
         }
 
         $user = User::where('email', $request->email)
             ->update(['password' => Hash::make($request->password)]);
 
         DB::table('password_resets')->where(['email' => $request->email])->delete();
-
         return $this->apiResponse('Password Reset successfully', null, Response::HTTP_OK, true);
     }
 
     public function test() {
-        $updatePassword = DB::table('password_resets')
-            ->where([
-                'email' => 'mominul@gmail.com'
-            ])
-            ->first();
 
-        // dd($updatePassword->created_at, Carbon::now()->toDateTimeString());
-        dd(Carbon::now()->diffInMinutes($updatePassword->created_at) > Config::get('auth.passwords.users.expire'));
+        dd(var_dump(Auth::user()->isAdmin));
     }
 }

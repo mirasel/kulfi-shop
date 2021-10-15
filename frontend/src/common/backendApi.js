@@ -46,6 +46,30 @@ export async function resendVerificationLink(token) {
   return data;
 }
 
+export async function emailForResetPassword(userData) {
+  const response = await fetch(`${BACKEND_URL}/api/auth/password/email`, {
+    method: "POST",
+    body: JSON.stringify(userData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await response.json();
+  return data;
+}
+
+export async function resetPassword(userData) {
+  const response = await fetch(`${BACKEND_URL}/api/auth/password/reset`, {
+    method: "POST",
+    body: JSON.stringify(userData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await response.json();
+  return data;
+}
+
 export async function getAllUsers() {
   const response = await fetch(`${BACKEND_URL}/users`);
   const data = await response.json();

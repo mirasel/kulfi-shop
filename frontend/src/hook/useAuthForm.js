@@ -73,6 +73,28 @@ const inputReducer = (state, action = { type: "" }) => {
         password: state.password,
         cpassword: state.cpassword,
       };
+    case "resetPassword":
+      return {
+        password: {
+          isValid: !(
+            passwordCheck(action.password) || isEmpty(action.password)
+          ),
+          error: isEmpty(action.password)
+            ? "Password is Required"
+            : passwordCheck(action.password)
+            ? "Password should be greater than or equal 8 character"
+            : null,
+        },
+        cpassword: {
+          isValid: !(
+            isEmpty(action.cpassword) || action.cpassword !== action.password
+          ),
+          error:
+            isEmpty(action.cpassword) || action.cpassword !== action.password
+              ? "Both password doesn't match"
+              : null,
+        },
+      };
     default:
       return {
         name: { isValid: null, error: null },

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer } from "react";
 import { logout } from "../common/backendApi";
-import { lgetItem } from "../common/commonFunctions";
+import { lgetItem, saveCommonData } from "../common/commonFunctions";
 import useApi from "../hook/useApi";
 import { useHistory } from "react-router-dom";
 
@@ -65,21 +65,39 @@ export const AuthContextProvider = (props) => {
         },
       });
     }
-  }, [isLoggedIn]);
+  }, []);
 
   useEffect(() => {
     if (status === "completed") {
       localStorage.clear();
       setIsLoggedIn(false);
+      setAccessToken(null);
+      dispatchUser({ type: "default" });
       redirect.push("/");
     }
   }, [status, redirect]);
+
+  function handleLogin(data) {
+    saveCommonData(data);
+    setIsLoggedIn(true);
+    setAccessToken(data.access_token);
+    dispatchUser({
+      type: "setup",
+      value: {
+        id: data.user.id,
+        name: data.user.name,
+        isAdmin: data.user.isAdmin ? true : false,
+        isVerified: data.user.email_verified_at !== null ? true : false,
+      },
+    });
+    redirect.push("/");
+  }
 
   function verifiedHandler(value) {
     dispatchUser({ type: "verified", value: value });
   }
 
-  const logoutHandler = () => {
+  const handleLogout = () => {
     sendRequest(accessToken);
   };
 
@@ -92,7 +110,8 @@ export const AuthContextProvider = (props) => {
         setIsLoggedIn: setIsLoggedIn,
         setAccessToken: setAccessToken,
         setIsVerified: verifiedHandler,
-        onLogout: logoutHandler,
+        onLogout: handleLogout,
+        onLogin: handleLogin,
       }}
     >
       {props.children}

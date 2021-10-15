@@ -1,7 +1,5 @@
 import React, { useEffect, useContext, useRef } from "react";
 import { register } from "../../common/backendApi";
-import { saveCommonData } from "../../common/commonFunctions";
-
 import Button from "../../components/UI/Button/Button";
 import Card from "../../components/UI/Card/Card";
 import Input from "../../components/UI/Input/Input";
@@ -12,6 +10,7 @@ import { useHistory } from "react-router-dom";
 import DoubleRing from "../../components/UI/Loading/DoubleRing";
 
 function Signup() {
+  console.log("from register");
   const { status, data, error, sendRequest } = useApi(register);
   const nameRef = useRef();
   const emailRef = useRef();
@@ -23,9 +22,7 @@ function Signup() {
 
   useEffect(() => {
     if (status === "completed") {
-      saveCommonData(data);
-      auth.setIsLoggedIn(true);
-      redirect.push("/");
+      auth.onLogin(data);
     }
     if (status === "error") {
       dispatchInput({ type: "responseRegisterError", errorMsg: error.email });
@@ -61,6 +58,7 @@ function Signup() {
 
   return (
     <Card>
+      <h1>Register</h1>
       <form onSubmit={registerHandler}>
         <Input
           id="name"

@@ -13,15 +13,13 @@ use Illuminate\Queue\SerializesModels;
 class ResetPassword extends Mailable {
     use Queueable, SerializesModels;
 
-    public $email, $url;
+    public $url;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($email, $url) {
-        //
-        $this->email = $email;
+    public function __construct($url) {
         $this->url = $url;
     }
 

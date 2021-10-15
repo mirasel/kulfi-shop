@@ -4,13 +4,13 @@ import Button from "../../components/UI/Button/Button";
 import Card from "../../components/UI/Card/Card";
 import Input from "../../components/UI/Input/Input";
 import DoubleRing from "../../components/UI/Loading/DoubleRing";
-import { saveCommonData } from "../../common/commonFunctions";
 import useApi from "../../hook/useApi";
 import AuthContext from "../../contextApi/authContext";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import useAuthForm from "../../hook/useAuthForm";
 
 function Login() {
+  console.log("from login");
   const { data, status, error, sendRequest } = useApi(login);
   const [input, dispatchInput] = useAuthForm();
   const emailRef = useRef();
@@ -20,9 +20,7 @@ function Login() {
 
   useEffect(() => {
     if (status === "completed") {
-      saveCommonData(data);
-      auth.setIsLoggedIn(true);
-      redirect.push("/");
+      auth.onLogin(data);
     }
     if (status === "error") {
       dispatchInput({ type: "responseLoginError", errorMsg: error });
@@ -49,6 +47,7 @@ function Login() {
   return (
     <React.Fragment>
       <Card>
+        <h1>Login</h1>
         <form onSubmit={loginHandler}>
           <Input
             id="email"
@@ -68,6 +67,7 @@ function Login() {
           {status === "pending" && <DoubleRing />}
           {status !== "pending" && (
             <div>
+              <Link to="/password/reset">Forgot Password?</Link>
               <div>
                 <p>{input.email.error && <span>{input.email.error}</span>}</p>
                 <p>

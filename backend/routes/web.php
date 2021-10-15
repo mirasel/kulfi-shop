@@ -15,6 +15,8 @@ Route::get('/', function () {
     return response('App is running');
 });
 
-
+Route::get('login', function () {
+    return redirect()->away(env('APP_FRONTEND_URL') . '/login');
+})->name('login');
 
 Route::get('test', 'UserController@test');
