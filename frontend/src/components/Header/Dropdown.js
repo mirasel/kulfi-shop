@@ -1,11 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import "./Dropdown.scss";
 import { Link } from "react-router-dom";
-import AuthContext from "../../contextApi/authContext";
+import { useAuthContext } from "../../contextApi/authContext";
 
 function Dropdown(props) {
   const [click, setClick] = useState(false);
-  const auth = useContext(AuthContext);
+  const auth = useAuthContext();
   const handleClick = () => setClick(!click);
 
   const onClickLogout = () => {

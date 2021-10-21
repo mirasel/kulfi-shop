@@ -1,13 +1,13 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.scss";
 import Dropdown from "./Dropdown";
-import AuthContext from "../../contextApi/authContext";
+import { useAuthContext } from "../../contextApi/authContext";
 
 function Navbar() {
   const [click, setClick] = useState(false);
   const [dropdown, setDropdown] = useState(false);
-  const auth = useContext(AuthContext);
+  const auth = useAuthContext();
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);

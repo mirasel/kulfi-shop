@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
-import { Switch, Route, Redirect, Link } from "react-router-dom";
+import React from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import Navbar from "./components/Header/Navbar";
 import Home from "./pages/Home";
-import AuthContext from "./contextApi/authContext";
+import { useAuthContext } from "./contextApi/authContext";
 import "./App.scss";
 import Verified from "./pages/Auth/Verified";
 import Verify from "./pages/Auth/Verify";
@@ -17,7 +17,7 @@ import NotFound from "./pages/NotFound";
 import Order from "./pages/User/Order";
 
 function App() {
-  const auth = useContext(AuthContext);
+  const auth = useAuthContext();
 
   console.log("from app");
   console.log(
@@ -34,40 +34,8 @@ function App() {
   );
   return (
     <React.Fragment>
-      <Navbar />
       <div className="App">
-        <div>
-          <code>access token - {auth.accessToken}</code>
-          <br />
-          <code>user id - {auth.user.id}</code>
-          <br />
-          <code>Logged in - {auth.isLoggedIn ? "true" : "false"}</code>
-          <br />
-          <code>Admin - {auth.user.isAdmin ? "true" : "false"}</code>
-          <br />
-          <code>Verified - {auth.user.isVerified ? "true" : "false"}</code>
-          <br />
-        </div>
-        <div>
-          <Link to="/order">Order</Link>
-          <br />
-          <Link to="/dashboard">Dashboard</Link>
-          <br />
-          <Link to="/denied">Denied</Link>
-          <br />
-          <Link to="/email/verify">Verify</Link>
-          <br />
-          <Link to="/password/reset">forgot password</Link>
-          <br />
-          <Link to="/password/reset/ashdfjdjlkdfkjlkfskdj?email=a@b.com">
-            reset password
-          </Link>
-          <br />
-          <Link to="/login">login</Link>
-          <br />
-          <Link to="/signup">register</Link>
-          <br />
-        </div>
+        <Navbar />
         <Switch>
           <Route exact path="/password/reset/:token">
             {auth.isLoggedIn ? <Redirect to="/" /> : <ResetForm />}
@@ -113,7 +81,7 @@ function App() {
             )}
           </Route>
 
-          <Route exact path="/dashboard">
+          <Route path="/dashboard">
             {auth.isLoggedIn ? (
               auth.user.isAdmin ? (
                 auth.user.isVerified ? (

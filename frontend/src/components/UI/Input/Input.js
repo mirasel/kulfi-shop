@@ -8,21 +8,35 @@ const Input = React.forwardRef((props, ref) => {
     return inputRef.current.value;
   };
 
+  const setValue = (data) => {
+    inputRef.current.value = data;
+  };
+
   useImperativeHandle(ref, () => {
-    return { value: currenValue };
+    return { value: currenValue, setValue: setValue };
   });
   return (
     <div className={`control ${props.isValid === false ? "invalid" : ""}`}>
       <label htmlFor={props.id}>{props.label}</label>
-      <input
-        type={props.type}
-        id={props.id}
-        // value={props.value}
-        // onChange={props.onChange}
-        onBlur={props.onBlur}
-        ref={inputRef}
-        required={props.required}
-      />
+      {props.type === "number" ? (
+        <input
+          type={props.type}
+          min={props.min}
+          step={props.step}
+          id={props.id}
+          onBlur={props.onBlur}
+          ref={inputRef}
+          required={props.required}
+        />
+      ) : (
+        <input
+          type={props.type}
+          id={props.id}
+          onBlur={props.onBlur}
+          ref={inputRef}
+          required={props.required}
+        />
+      )}
     </div>
   );
 });

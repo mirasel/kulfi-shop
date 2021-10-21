@@ -1,11 +1,11 @@
-import React, { useEffect, useContext, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { register } from "../../common/backendApi";
 import Button from "../../components/UI/Button/Button";
 import Card from "../../components/UI/Card/Card";
 import Input from "../../components/UI/Input/Input";
 import useApi from "../../hook/useApi";
 import useAuthForm from "../../hook/useAuthForm";
-import AuthContext from "../../contextApi/authContext";
+import { useAuthContext } from "../../contextApi/authContext";
 import { useHistory } from "react-router-dom";
 import DoubleRing from "../../components/UI/Loading/DoubleRing";
 
@@ -17,7 +17,7 @@ function Signup() {
   const passwordRef = useRef();
   const cpasswordRef = useRef();
   const [input, dispatchInput] = useAuthForm();
-  const auth = useContext(AuthContext);
+  const auth = useAuthContext();
   const redirect = useHistory();
 
   useEffect(() => {

@@ -52,7 +52,7 @@ function useApi(requestFunction, startWithPending = false) {
         : dispatch({
             type: "error",
             message: response.message,
-            error: response.errors || "Something went wrong!",
+            error: response.errors,
           });
     },
     [requestFunction]

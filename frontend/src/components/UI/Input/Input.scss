@@ -25,13 +25,21 @@
   border: 1px solid #ccc;
 }
 
+.control svg,
+.contol img,
+.control div:first-of-type {
+  flex: 3;
+}
+
 .control input:focus {
   outline: none;
   border-color: #4f005f;
   // background: #f6dbfc;
 }
 
-.control.invalid input {
+.control.invalid input,
+.control.invalid svg,
+.control.invalid div {
   border-color: red;
   // background: #fbdada;
 }

@@ -164,6 +164,6 @@ class UserController extends Controller {
 
     public function test() {
 
-        dd(var_dump(Auth::user()->isAdmin));
+        dd(Auth::user()->email_verified_at !== null);
     }
 }

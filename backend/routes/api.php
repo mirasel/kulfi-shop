@@ -33,3 +33,25 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('verify/{id}', 'UserController@verify')->name('verify');
     });
 });
+
+Route::group(['prefix' => 'kulfi'], function () {
+    Route::get('/read', 'KulfiController@index');
+    Route::get('/show/{id}', 'KulfiController@show');
+
+    Route::group(['middleware' => ['auth:api', 'admin', 'apiVerified']], function () {
+        Route::post('/create', 'KulfiController@create');
+        Route::post('/edit/{id}', 'KulfiController@update');
+        Route::delete('/delete/{id}', 'KulfiController@destroy');
+    });
+    // Route::get('/kulfis/edit/{id}', 'KulfiController@get_kulfi');
+});
+
+Route::group(['prefix' => 'category'], function () {
+
+    Route::group(['middleware' => ['auth:api', 'admin', 'apiVerified']], function () {
+        Route::post('create', 'CategoryController@store');
+    });
+
+    Route::get('read', 'CategoryController@index');
+    Route::get('show/{id}', 'CategoryController@show');
+});

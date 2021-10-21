@@ -1,0 +1,9 @@
+.option {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: center;
+  input {
+    margin-right: 10px;
+  }
+}

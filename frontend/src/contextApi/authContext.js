@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 import { logout } from "../common/backendApi";
 import { lgetItem, saveCommonData } from "../common/commonFunctions";
 import useApi from "../hook/useApi";
@@ -118,5 +118,9 @@ export const AuthContextProvider = (props) => {
     </AuthContext.Provider>
   );
 };
+
+export function useAuthContext() {
+  return useContext(AuthContext);
+}
 
 export default AuthContext;

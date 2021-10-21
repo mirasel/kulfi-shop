@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import { resendVerificationLink } from "../../common/backendApi";
 import Card from "../../components/UI/Card/Card";
 import useApi from "../../hook/useApi";
-import AuthContext from "../../contextApi/authContext";
+import { useAuthContext } from "../../contextApi/authContext";
 import "./Verify.scss";
 
 function Verify() {
   console.log("from verify");
-  const auth = useContext(AuthContext);
+  const auth = useAuthContext();
   const { message, error, sendRequest } = useApi(resendVerificationLink);
 
   const resendHandler = () => {

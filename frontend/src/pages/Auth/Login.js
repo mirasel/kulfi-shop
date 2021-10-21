@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { login } from "../../common/backendApi";
 import Button from "../../components/UI/Button/Button";
 import Card from "../../components/UI/Card/Card";
 import Input from "../../components/UI/Input/Input";
 import DoubleRing from "../../components/UI/Loading/DoubleRing";
 import useApi from "../../hook/useApi";
-import AuthContext from "../../contextApi/authContext";
+import { useAuthContext } from "../../contextApi/authContext";
 import { Link, useHistory } from "react-router-dom";
 import useAuthForm from "../../hook/useAuthForm";
 
@@ -15,7 +15,7 @@ function Login() {
   const [input, dispatchInput] = useAuthForm();
   const emailRef = useRef();
   const passwordRef = useRef();
-  const auth = useContext(AuthContext);
+  const auth = useAuthContext();
   const redirect = useHistory();
 
   useEffect(() => {
