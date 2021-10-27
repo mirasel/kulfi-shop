@@ -18,17 +18,6 @@ function Dropdown(props) {
         onClick={handleClick}
         className={click ? "dropdown-menu clicked" : "dropdown-menu"}
       >
-        {!auth.user.isAdmin && (
-          <li>
-            <Link
-              className="dropdown-link"
-              to="/profile"
-              onClick={() => setClick(false)}
-            >
-              My Profile
-            </Link>
-          </li>
-        )}
         <li>
           <button className="dropdown-link" onClick={onClickLogout}>
             Logout

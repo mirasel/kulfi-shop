@@ -8,14 +8,12 @@ import "./index.scss";
 const App = lazy(() => import("./App"));
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Router>
-      <AuthContextProvider>
-        <Suspense fallback={<DoubleRing />}>
-          <App />
-        </Suspense>
-      </AuthContextProvider>
-    </Router>
-  </React.StrictMode>,
+  <Router>
+    <AuthContextProvider>
+      <Suspense fallback={<DoubleRing />}>
+        <App />
+      </Suspense>
+    </AuthContextProvider>
+  </Router>,
   document.getElementById("root")
 );

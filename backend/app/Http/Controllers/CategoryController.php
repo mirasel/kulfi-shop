@@ -11,13 +11,19 @@ use Symfony\Component\HttpFoundation\Response;
 class CategoryController extends Controller {
     use CommonApiResponse;
 
-    public function index() {
+
+    public static function getAllCategories() {
         $categories = Category::all();
         $data = [];
         foreach ($categories as $category) {
             $data[] = ["value" => $category->id, "label" => $category->name];
         }
-        return $this->apiResponse('All category', $data, Response::HTTP_OK, true);
+        return $data;
+    }
+
+    public function index() {
+        $categories = $this->getAllCategories();
+        return $this->apiResponse('All category', $categories, Response::HTTP_OK, true);
     }
 
     public function show($id) {

@@ -36,11 +36,12 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::group(['prefix' => 'kulfi'], function () {
     Route::get('/read', 'KulfiController@index');
+    Route::get('/getKulfiToUpdate/{id}', 'KulfiController@getKulfiToUpdate');
     Route::get('/show/{id}', 'KulfiController@show');
 
     Route::group(['middleware' => ['auth:api', 'admin', 'apiVerified']], function () {
         Route::post('/create', 'KulfiController@create');
-        Route::post('/edit/{id}', 'KulfiController@update');
+        Route::post('/update/{id}', 'KulfiController@update');
         Route::delete('/delete/{id}', 'KulfiController@destroy');
     });
     // Route::get('/kulfis/edit/{id}', 'KulfiController@get_kulfi');
@@ -54,4 +55,15 @@ Route::group(['prefix' => 'category'], function () {
 
     Route::get('read', 'CategoryController@index');
     Route::get('show/{id}', 'CategoryController@show');
+});
+
+Route::group(['prefix' => 'comment', 'middleware' => 'auth:api'], function () {
+    Route::post('create', 'CommentController@store');
+    Route::delete('delete/{id}', 'CommentController@destroy');
+});
+
+Route::group(['prefix' => 'review', 'middleware' => 'auth:api'], function () {
+    Route::post('create', 'ReviewController@store');
+    Route::post('delete', 'ReviewController@destroy');
+    Route::get('get/{id}', 'ReviewController@show');
 });

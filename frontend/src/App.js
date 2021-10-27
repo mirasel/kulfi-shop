@@ -15,104 +15,100 @@ import Denied from "./pages/Auth/Denied";
 import Dashboard from "./pages/Admin/Dashboard";
 import NotFound from "./pages/NotFound";
 import Order from "./pages/User/Order";
+import KulfiDetails from "./pages/Kulfi/KulfiDetails";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   const auth = useAuthContext();
-
   console.log("from app");
-  console.log(
-    "il-",
-    auth.isLoggedIn,
-    "\nid-",
-    auth.user.id,
-    "\nname-",
-    auth.user.name,
-    "\nia-",
-    auth.user.isAdmin,
-    "\niv-",
-    auth.user.isVerified
-  );
   return (
     <React.Fragment>
       <div className="App">
         <Navbar />
-        <Switch>
-          <Route exact path="/password/reset/:token">
-            {auth.isLoggedIn ? <Redirect to="/" /> : <ResetForm />}
-          </Route>
+        <div className="main-div">
+          <Switch>
+            <Route exact path="/kulfi/details/:kulfiId">
+              <KulfiDetails />
+            </Route>
 
-          <Route exact path="/verified/:userId">
-            {auth.isLoggedIn ? <Verified /> : <Redirect to="/login" />}
-          </Route>
+            <Route exact path="/password/reset/:token">
+              {auth.isLoggedIn ? <Redirect to="/" /> : <ResetForm />}
+            </Route>
 
-          <Route exact path="/password/reset">
-            {!auth.isLoggedIn ? <EmailForm /> : <Redirect to="/" />}
-          </Route>
+            <Route exact path="/verified/:userId">
+              {auth.isLoggedIn ? <Verified /> : <Redirect to="/login" />}
+            </Route>
 
-          <Route exact path="/email/verify">
-            {!auth.isLoggedIn ? (
-              <Redirect to="/login" />
-            ) : auth.user.isVerified ? (
-              <Redirect to="/" />
-            ) : (
-              <Verify />
-            )}
-          </Route>
+            <Route exact path="/password/reset">
+              {!auth.isLoggedIn ? <EmailForm /> : <Redirect to="/" />}
+            </Route>
 
-          <Route exact path="/denied">
-            {!auth.isLoggedIn ? (
-              <Redirect to="/login" />
-            ) : auth.user.isAdmin ? (
-              <Redirect to="/" />
-            ) : (
-              <Denied />
-            )}
-          </Route>
+            <Route exact path="/email/verify">
+              {!auth.isLoggedIn ? (
+                <Redirect to="/login" />
+              ) : auth.user.isVerified ? (
+                <Redirect to="/" />
+              ) : (
+                <Verify />
+              )}
+            </Route>
 
-          <Route exact path="/order">
-            {!auth.isLoggedIn ? (
-              <Redirect to="/login" />
-            ) : auth.user.isAdmin ? (
-              <Redirect to="/" />
-            ) : !auth.user.isVerified ? (
-              <Redirect to="/email/verify" />
-            ) : (
-              <Order />
-            )}
-          </Route>
+            <Route exact path="/denied">
+              {!auth.isLoggedIn ? (
+                <Redirect to="/login" />
+              ) : auth.user.isAdmin ? (
+                <Redirect to="/" />
+              ) : (
+                <Denied />
+              )}
+            </Route>
 
-          <Route path="/dashboard">
-            {auth.isLoggedIn ? (
-              auth.user.isAdmin ? (
-                auth.user.isVerified ? (
-                  <Dashboard />
+            <Route exact path="/order">
+              {!auth.isLoggedIn ? (
+                <Redirect to="/login" />
+              ) : auth.user.isAdmin ? (
+                <Redirect to="/" />
+              ) : !auth.user.isVerified ? (
+                <Redirect to="/email/verify" />
+              ) : (
+                <Order />
+              )}
+            </Route>
+
+            <Route path="/dashboard">
+              {auth.isLoggedIn ? (
+                auth.user.isAdmin ? (
+                  auth.user.isVerified ? (
+                    <Dashboard />
+                  ) : (
+                    <Redirect to="/email/verify" />
+                  )
                 ) : (
-                  <Redirect to="/email/verify" />
+                  <Redirect to="/denied" />
                 )
               ) : (
-                <Redirect to="/denied" />
-              )
-            ) : (
-              <Redirect to="/login" />
-            )}
-          </Route>
+                <Redirect to="/login" />
+              )}
+            </Route>
 
-          <Route exact path="/login">
-            {auth.isLoggedIn ? <Redirect to="/" /> : <Login />}
-          </Route>
+            <Route exact path="/login">
+              {auth.isLoggedIn ? <Redirect to="/" /> : <Login />}
+            </Route>
 
-          <Route exact path="/signup">
-            {auth.isLoggedIn ? <Redirect to="/" /> : <Register />}
-          </Route>
+            <Route exact path="/signup">
+              {auth.isLoggedIn ? <Redirect to="/" /> : <Register />}
+            </Route>
 
-          <Route exact path="/">
-            <Home />
-          </Route>
+            <Route exact path="/">
+              <Home />
+            </Route>
 
-          <Route path="*">
-            <NotFound />
-          </Route>
-        </Switch>
+            <Route path="*">
+              <NotFound />
+            </Route>
+          </Switch>
+          <Footer />
+        </div>
       </div>
       <ToastContainer
         position="bottom-left"

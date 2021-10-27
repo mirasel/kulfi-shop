@@ -1,16 +1,13 @@
 .sidebar-menu {
-  background-color: #060b26;
-  width: 250px;
+  position: fixed;
+  background-color: #387d4c;
+  width: 200px;
   height: 91.05vh;
   display: flex;
   justify-content: center;
   transition: 850ms;
+  margin: 0;
 }
-
-// .sidebar-menu.active {
-//   left: 0;
-//   transition: 350ms;
-// }
 
 .sidebar-text {
   display: flex;
@@ -23,7 +20,7 @@
 
 .sidebar-text a {
   text-decoration: none;
-  color: #f5f5f5;
+  color: white;
   font-size: 18px;
   width: 95%;
   height: 100%;
@@ -34,10 +31,17 @@
 }
 
 .sidebar-text a:hover {
-  background-color: #1a83ff;
+  background-color: white;
+  color: #387d4c;
+}
+
+a.sideActive {
+  background-color: white;
+  color: #387d4c;
 }
 
 .sidebar-menu-items {
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   width: 100%;

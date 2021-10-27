@@ -1,0 +1,52 @@
+.kulfilist-table {
+  margin-top: 40px;
+  text-align: center;
+  border-spacing: 10px;
+
+  th {
+    background-color: #387d4c;
+    // text-align: center;
+    padding: 10px 20px;
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 20px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+
+  td {
+    background-color: white;
+    // text-align: center;
+    padding: 5px;
+    border-radius: 0.5rem;
+    color: black;
+    font-weight: 600;
+    font-size: 16px;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
+
+    img {
+      width: 150px;
+      height: 70px;
+    }
+
+    span {
+      margin: 0;
+    }
+
+    & .edit {
+      margin-right: 5px;
+      svg {
+        color: #91b2c7;
+        height: 24px;
+        width: 24px;
+      }
+    }
+
+    & .delete {
+      cursor: pointer;
+      margin-left: 5px;
+      color: tomato;
+      height: 24px;
+      width: 24px;
+    }
+  }
+}

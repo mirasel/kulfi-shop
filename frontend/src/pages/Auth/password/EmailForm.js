@@ -5,6 +5,8 @@ import Button from "../../../components/UI/Button/Button";
 import useApi from "../../../hook/useApi";
 import { emailForResetPassword } from "../../../common/backendApi";
 import { emailCheck, isEmpty } from "../../../common/commonFunctions";
+import "./EmailForm.scss";
+import { toast } from "react-toastify";
 
 function EmailForm() {
   console.log("from email reset password");
@@ -14,6 +16,9 @@ function EmailForm() {
   const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
+    if (status === "completed") {
+      toast.success(message);
+    }
     if (status === "error") {
       setEmailIsValid(false);
       setErrorMsg(error.email);
@@ -41,23 +46,30 @@ function EmailForm() {
     }
   };
   return (
-    <Card>
-      <h1>Reset Password</h1>
-      {emailIsValid && message && <p>{message}</p>}
-      <form onSubmit={handleEmail}>
-        <Input
-          id="email"
-          label="E-mail"
-          type="text"
-          isValid={emailIsValid}
-          ref={emailRef}
-        />
-        {errorMsg && <p>{errorMsg}</p>}
-        <Button type="submit" onClick={handleSubmit}>
-          Send Password Reset Email
-        </Button>
-      </form>
-    </Card>
+    <div className="reset-password">
+      <div className="reset-password-content">
+        <h1>Reset Password</h1>
+        <form onSubmit={handleEmail}>
+          <Input
+            id="email"
+            label="E-mail"
+            type="text"
+            isValid={emailIsValid}
+            ref={emailRef}
+          />
+          <div className="button-error-div">
+            {!emailIsValid && (
+              <div className="errors">
+                <p>{errorMsg}</p>
+              </div>
+            )}
+            <Button type="submit" onClick={handleSubmit}>
+              Send Password Reset Email
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
 

@@ -24,7 +24,6 @@ const Input = React.forwardRef((props, ref) => {
           min={props.min}
           step={props.step}
           id={props.id}
-          onBlur={props.onBlur}
           ref={inputRef}
           required={props.required}
         />
@@ -32,7 +31,6 @@ const Input = React.forwardRef((props, ref) => {
         <input
           type={props.type}
           id={props.id}
-          onBlur={props.onBlur}
           ref={inputRef}
           required={props.required}
         />

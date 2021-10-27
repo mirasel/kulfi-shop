@@ -9,6 +9,7 @@ use App\Http\Requests\ResetPasswordFormRequest;
 use App\Jobs\ResetPasswordJob;
 use App\Jobs\VerifyEmailJob;
 use App\Mail\VerifyEmail;
+use App\Review;
 use App\Traits\CommonApiResponse;
 use App\User;
 use Carbon\Carbon;
@@ -163,7 +164,7 @@ class UserController extends Controller {
     }
 
     public function test() {
-
-        dd(Auth::user()->email_verified_at !== null);
+        $review = Review::where(['kulfi_id' => 17, 'user_id' => 2])->first();
+        dd($review === null);
     }
 }

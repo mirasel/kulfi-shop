@@ -1,5 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
 
+:root {
+  --background-color: #f0fdfd;
+  --main-text-color: #387d4c;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -7,6 +12,12 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background-color);
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
 }
 
 code {
@@ -19,6 +30,72 @@ code {
   margin: 0;
   padding: 0;
   font-family: "Nunito", sans-serif;
+}
+
+.pagination {
+  margin: 40px 0px;
+  display: flex;
+  list-style: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  a {
+    display: flex;
+    height: 100%;
+    padding: 6px;
+    justify-content: center;
+    align-items: center;
+    color: var(--main-text-color);
+    background-color: white;
+
+    &:hover {
+      background-color: #bce6d7;
+    }
+  }
+
+  &-active a {
+    background-color: var(--main-text-color);
+    color: white;
+  }
+  &-disabled a {
+    background-color: rgb(209, 209, 209);
+  }
+}
+
+.loading {
+  width: 100vw;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-inline {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-error-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.errors {
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #ffebe9;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 129, 130, 0.4);
+  font-size: 14px;
+  span {
+    margin: 0;
+  }
 }
 
 ::-webkit-scrollbar {

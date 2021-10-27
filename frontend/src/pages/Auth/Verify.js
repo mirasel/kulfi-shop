@@ -1,32 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { resendVerificationLink } from "../../common/backendApi";
-import Card from "../../components/UI/Card/Card";
 import useApi from "../../hook/useApi";
 import { useAuthContext } from "../../contextApi/authContext";
+import { toast } from "react-toastify";
 import "./Verify.scss";
 
 function Verify() {
-  console.log("from verify");
   const auth = useAuthContext();
-  const { message, error, sendRequest } = useApi(resendVerificationLink);
+  const { status, message, error, sendRequest } = useApi(
+    resendVerificationLink
+  );
+
+  useEffect(() => {
+    if (status === "completed") {
+      toast.success(message);
+    }
+    if (status === "error") {
+      toast.error(message);
+    }
+  }, [status]);
 
   const resendHandler = () => {
     sendRequest(auth.accessToken);
   };
   return (
-    <Card>
-      {error === null && message && <div>{message}</div>}
-      <h1>Verify Your Email Address</h1>
-      <p>Before proceeding, please check your email for a verification link.</p>
-      <div>
-        If you did not receive the email,{" "}
-        <button className="resendBtn" onClick={resendHandler}>
-          {" "}
-          click here to request another
-        </button>
-        .{error && <div>{error}</div>}
+    <div className="verify">
+      <div className="verify-content">
+        <h1>Verify Your Email Address</h1>
+        <p>
+          Before proceeding, please check your email for a verification link.
+        </p>
+        <div>
+          If you did not receive the email,{" "}
+          <button className="resendBtn" onClick={resendHandler}>
+            click here to request another.
+          </button>
+        </div>
       </div>
-    </Card>
+    </div>
   );
 }
 

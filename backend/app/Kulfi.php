@@ -16,4 +16,12 @@ class Kulfi extends Model {
     public function categories() {
         return $this->belongsToMany(Category::class)->withTimestamps();
     }
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function reviews() {
+        return $this->hasMany(Review::class);
+    }
 }

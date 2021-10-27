@@ -8,7 +8,9 @@ use App\Http\Requests\KulfiCreateRequest;
 use App\Kulfi;
 use App\Traits\CommonApiResponse;
 use Symfony\Component\HttpFoundation\Response;
-// use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\Http\Controllers\CategoryController;
+use App\Http\Requests\UpdateKulfiRequest;
+use Illuminate\Support\Facades\Auth;
 
 class KulfiController extends Controller {
     use CommonApiResponse;
@@ -16,18 +18,24 @@ class KulfiController extends Controller {
 
     public function index() {
         $kulfis = Kulfi::all();
-        return $this->apiResponse('send all kulfis', $kulfis, Response::HTTP_OK, true);
+        $reviews = [];
+        foreach ($kulfis as $kulfi) {
+            $kulfi->categories;
+            $reviews[] = $this->getReviewAerage($kulfi->reviews);;
+        }
+        return $this->apiResponse('Getting all kulfis', ['kulfis' => $kulfis, 'reviews' => $reviews], Response::HTTP_OK, true);
     }
 
     public function show($id) {
         $kulfi = Kulfi::findOrFail($id);
-        return $this->apiResponse('send a kulfi', $kulfi, Response::HTTP_OK, true);
+        $kulfi->categories;
+        $kulfi->comments;
+        $reviews = $this->getReviewAerage($kulfi->reviews);
+        foreach ($kulfi->comments as $comment) {
+            $comment->user;
+        }
+        return $this->apiResponse('Get a kulfi', ['kulfi' => $kulfi, 'reviews' => $reviews], Response::HTTP_OK, true);
     }
-
-    // public function create() {
-    //     $categories = Category::all();
-    //     return view('kulfis.create', compact('categories'));
-    // }
 
     public function create(KulfiCreateRequest $request) {
         $kulfi = new Kulfi();
@@ -43,41 +51,36 @@ class KulfiController extends Controller {
         return $this->apiResponse("$request->name is added Successfully", $kulfi, Response::HTTP_OK, true);
     }
 
-    public function get_kulfi($id) {
+    public function getKulfiToUpdate($id) {
         $kulfi = Kulfi::findOrFail($id);
-        $categories = Category::all();
-        $kulfiCategoriesId = [];
-        foreach ($kulfi->categories as $category) {
-            $kulfiCategoriesId[] = $category->id;
-        }
-        return view('kulfis.edit', compact('kulfi', 'categories', 'kulfiCategoriesId'));
+        $kulfi->categories;
+        $categories = CategoryController::getAllCategories();
+        $data = ['kulfi' => $kulfi, 'categories' => $categories];
+        return $this->apiResponse('Getting a kulfi', $data, Response::HTTP_OK, true);
     }
 
-    public function update($id) {
-        $kulfiData = request()->validate([
-            'name' => 'required|ends_with:kulfi',
-            'price' => 'required|gte:10',
-        ]);
-        $categoryData = request()->validate([
-            'categories' => 'required',
-        ]);
-
+    public function update(UpdateKulfiRequest $request, $id) {
         $kulfi = Kulfi::findOrFail($id);
+        // dd($request->image);
         $kulfi->update([
-            'name' => request()->name,
-            'price' => request()->price,
+            'name' => ucwords(strtolower($request->name)),
+            'description' => $request->description,
+            'price' => json_decode($request->price),
         ]);
-        if (request()->image !== null) {
+        if ($request->image !== null && gettype($request->image) !== 'string') {
             $image_path = public_path('storage/') . $kulfi->image;
             if (\File::exists($image_path)) {
                 \File::delete($image_path);
             }
             $kulfi->update([
-                'image' => request()->image->store('uploadImages', 'public'),
+                'image' => $request->image->store('images', 'public'),
             ]);
         }
-        $kulfi->categories()->sync($categoryData['categories']);
-        return redirect(route('kulfis.show', $kulfi->id));
+        $kulfi->categories()->sync(array_map(function ($v) {
+            return (int) $v;
+        }, explode(",", $request->categories)));
+
+        return $this->apiResponse("Kulfi is updated Successfully", $kulfi, Response::HTTP_OK, true);
     }
 
     public function destroy($id) {
@@ -88,6 +91,18 @@ class KulfiController extends Controller {
         }
         $kulfi->delete();
         $kulfi->categories()->detach();
-        return redirect(route('kulfis.index'));
+        return $this->apiResponse("$kulfi->name is deleted", null, Response::HTTP_OK, true);
+    }
+
+    public function getReviewAerage($reviews) {
+        $ratings = [];
+        foreach ($reviews as $review) {
+            $ratings[] = (int)$review->rating;
+        }
+        if (count($ratings) !== 0) {
+            return ['total' => array_sum($ratings), 'count' => count($ratings), 'avg' => round(array_sum($ratings) / count($ratings), 2)];
+        } else {
+            return ['total' => 0, 'count' => 0, 'avg' => 0];
+        }
     }
 }

@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import { login } from "../../common/backendApi";
 import Button from "../../components/UI/Button/Button";
-import Card from "../../components/UI/Card/Card";
 import Input from "../../components/UI/Input/Input";
-import DoubleRing from "../../components/UI/Loading/DoubleRing";
+import Spin from "../../components/UI/Loading/Spin";
 import useApi from "../../hook/useApi";
 import { useAuthContext } from "../../contextApi/authContext";
 import { Link, useHistory } from "react-router-dom";
 import useAuthForm from "../../hook/useAuthForm";
+import "./Login.scss";
 
 function Login() {
   console.log("from login");
@@ -45,8 +45,9 @@ function Login() {
     });
   };
   return (
-    <React.Fragment>
-      <Card>
+    // <div className="auth">
+    <div className="login">
+      <div className="login-content">
         <h1>Login</h1>
         <form onSubmit={loginHandler}>
           <Input
@@ -64,24 +65,39 @@ function Login() {
             isValid={input.password.isValid}
             ref={passwordRef}
           />
-          {status === "pending" && <DoubleRing />}
+          {status === "pending" && (
+            <div className="loading-inline">
+              <Spin />
+            </div>
+          )}
           {status !== "pending" && (
-            <div>
-              <Link to="/password/reset">Forgot Password?</Link>
-              <div>
-                <p>{input.email.error && <span>{input.email.error}</span>}</p>
-                <p>
-                  {input.password.error && <span>{input.password.error}</span>}
-                </p>
+            <div className="button-error-div">
+              {(!input.email.isValid || !input.password.isValid) && (
+                <div className="errors">
+                  <p>{input.email.error && <span>{input.email.error}</span>}</p>
+                  <p>
+                    {input.password.error && (
+                      <span>{input.password.error}</span>
+                    )}
+                  </p>
+                </div>
+              )}
+              <div className="loginBtn">
+                <Button type="submit" onClick={submitHandler}>
+                  Login
+                </Button>
+                <Link to="/password/reset">Forgot Password?</Link>
               </div>
-              <Button type="submit" onClick={submitHandler}>
-                Login
-              </Button>
             </div>
           )}
         </form>
-      </Card>
-    </React.Fragment>
+        <div className="signupMsg">
+          <p>New to Kulfizz?</p>
+          <Link to="/signup">Create an Account.</Link>
+        </div>
+      </div>
+    </div>
+    // </div>
   );
 }
 

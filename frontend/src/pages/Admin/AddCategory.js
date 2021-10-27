@@ -7,6 +7,7 @@ import Card from "../../components/UI/Card/Card";
 import Input from "../../components/UI/Input/Input";
 import { useAuthContext } from "../../contextApi/authContext";
 import useApi from "../../hook/useApi";
+import "./AddCategory.scss";
 
 function AddCategory() {
   const categoryRef = useRef();
@@ -53,22 +54,30 @@ function AddCategory() {
   };
 
   return (
-    <Card>
-      <h1>Add a Category</h1>
-      <form onSubmit={handleAddCategory}>
-        <Input
-          id="name"
-          label="Category Name"
-          type="text"
-          isValid={nameIsValid}
-          ref={categoryRef}
-        />
-        {errorMsg && <p>{errorMsg}</p>}
-        <Button type="submit" onClick={handleSubmit}>
-          Add
-        </Button>
-      </form>
-    </Card>
+    <div className="add-category">
+      <div className="add-category-content">
+        <h1>Add a Category</h1>
+        <form onSubmit={handleAddCategory}>
+          <Input
+            id="name"
+            label="Category Name"
+            type="text"
+            isValid={nameIsValid}
+            ref={categoryRef}
+          />
+          <div className="button-error-div">
+            {errorMsg && (
+              <div className="errors">
+                <p>{errorMsg}</p>
+              </div>
+            )}
+            <Button type="submit" onClick={handleSubmit}>
+              Done
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
 

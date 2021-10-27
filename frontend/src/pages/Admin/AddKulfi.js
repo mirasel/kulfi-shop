@@ -97,7 +97,7 @@ function AddKulfi() {
 
   const handleSubmit = () => {
     dispatchInput({
-      type: "submitAddKulfi",
+      type: "addKulfi",
       name: nameRef.current.value(),
       description: descriptionRef.current.value(),
       price: priceRef.current.value(),
@@ -120,91 +120,107 @@ function AddKulfi() {
   };
 
   return (
-    <Card className="card-width">
-      <h1>Add a Category</h1>
-      <form onSubmit={handleAddKulfi}>
-        <Input
-          id="name"
-          label="Kulfi Name"
-          type="text"
-          isValid={input.name.isValid}
-          ref={nameRef}
-        />
-        <Input
-          id="description"
-          label="Description"
-          type="text"
-          isValid={input.description.isValid}
-          ref={descriptionRef}
-        />
-        <Input
-          id="price"
-          label="Kulfi Price"
-          type="number"
-          min="10.0"
-          step="0.01"
-          isValid={input.price.isValid}
-          ref={priceRef}
-        />
-        <div className="control">
-          <label htmlFor="kulfi_image">Kulfi Image</label>
-          {imgPreview ? (
-            <div>
-              <img src={imgPreview} alt="Kulfi" />
-              <FaWindowClose onClick={() => setImagefile(null)} />
-            </div>
-          ) : (
-            <FaUpload
-              className="uploadBtn"
-              onClick={() => imageRef.current.click()}
+    <div className="add-kulfi">
+      <div className="add-kulfi-content">
+        <h1>Add Kulfi</h1>
+        <form onSubmit={handleAddKulfi}>
+          <Input
+            id="name"
+            label="Kulfi Name"
+            type="text"
+            isValid={input.name.isValid}
+            ref={nameRef}
+          />
+          <Input
+            id="description"
+            label="Description"
+            type="text"
+            isValid={input.description.isValid}
+            ref={descriptionRef}
+          />
+          <Input
+            id="price"
+            label="Kulfi Price"
+            type="number"
+            min="10.0"
+            step="0.01"
+            isValid={input.price.isValid}
+            ref={priceRef}
+          />
+          <div className="kulfi-image">
+            <label htmlFor="kulfi_image">Kulfi Image</label>
+            {imgPreview ? (
+              <div className="img-div">
+                <img src={imgPreview} alt="Kulfi" />
+                <FaWindowClose onClick={() => setImagefile(null)} />
+              </div>
+            ) : (
+              <div
+                className={`uploadBtn ${
+                  !input.image.isValid ? "img-invalid" : ""
+                } `}
+              >
+                <FaUpload onClick={() => imageRef.current.click()} />
+              </div>
+            )}
+            <input
+              type="file"
+              style={{ display: "none" }}
+              ref={imageRef}
+              accept="image/*"
+              onChange={handleImageInput}
             />
-          )}
-          <input
-            type="file"
-            style={{ display: "none" }}
-            ref={imageRef}
-            accept="image/*"
-            onChange={handleImageInput}
-          />
-        </div>
-        <div>
-          <label htmlFor="kulfi_category">Kulfi Categories</label>
-          <MultiSelect
-            options={catStatus === "completed" ? categories : []}
-            allowSelectAll={true}
-            onChange={handleCategoryChange}
-            value={optionSelected}
-          />
-        </div>
-        {kulfiStatus === "pending" && <DoubleRing />}
-        {kulfiStatus !== "pending" && (
-          <div>
-            <div>
-              <p>{input.name.error && <span>{input.name.error}</span>}</p>
-
-              <p>
-                {input.description.error && (
-                  <span>{input.description.error}</span>
-                )}
-              </p>
-
-              <p>{input.price.error && <span>{input.price.error}</span>}</p>
-              <p>{input.image.error && <span>{input.image.error}</span>}</p>
-              <p>
-                {input.categories.error && (
-                  <span>{input.categories.error}</span>
-                )}
-              </p>
-              <p>{kulfiError && <span>{kulfiError.image}</span>}</p>
-            </div>
-
-            <Button type="submit" onClick={handleSubmit}>
-              Add Kulfi
-            </Button>
           </div>
-        )}
-      </form>
-    </Card>
+          <div className="kulfi-category">
+            <label htmlFor="kulfi_category">Categories</label>
+            <div
+              className={`category-input-div ${
+                !input.categories.isValid ? "cat-invalid" : ""
+              } `}
+            >
+              <MultiSelect
+                options={catStatus === "completed" ? categories : []}
+                allowSelectAll={true}
+                onChange={handleCategoryChange}
+                value={optionSelected}
+              />
+            </div>
+          </div>
+          {kulfiStatus === "pending" && <DoubleRing />}
+          {kulfiStatus !== "pending" && (
+            <div className="button-error-div">
+              {(!input.name.isValid ||
+                !input.description.isValid ||
+                !input.price.isValid ||
+                !input.image.isValid ||
+                !input.categories.isValid) && (
+                <div className="errors">
+                  <p>{input.name.error && <span>{input.name.error}</span>}</p>
+
+                  <p>
+                    {input.description.error && (
+                      <span>{input.description.error}</span>
+                    )}
+                  </p>
+
+                  <p>{input.price.error && <span>{input.price.error}</span>}</p>
+                  <p>{input.image.error && <span>{input.image.error}</span>}</p>
+                  <p>
+                    {input.categories.error && (
+                      <span>{input.categories.error}</span>
+                    )}
+                  </p>
+                </div>
+              )}
+
+              <Button className="addBtn" type="submit" onClick={handleSubmit}>
+                Done
+              </Button>
+            </div>
+          )}
+        </form>
+      </div>
+    </div>
   );
 }
 

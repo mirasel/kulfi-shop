@@ -21,7 +21,7 @@
   flex: 3;
   font: inherit;
   padding: 0.35rem 0.35rem;
-  border-radius: 6px;
+  border-radius: 5px;
   border: 1px solid #ccc;
 }
 
@@ -40,7 +40,7 @@
 .control.invalid input,
 .control.invalid svg,
 .control.invalid div {
-  border-color: red;
+  border-color: #ff8182;
   // background: #fbdada;
 }
 

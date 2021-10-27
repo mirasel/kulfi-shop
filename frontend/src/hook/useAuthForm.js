@@ -97,20 +97,20 @@ const inputReducer = (state, action = { type: "" }) => {
       };
     default:
       return {
-        name: { isValid: null, error: null },
-        email: { isValid: null, error: null },
-        password: { isValid: null, error: null },
-        cpassword: { isValid: null, error: null },
+        name: { isValid: true, error: null },
+        email: { isValid: true, error: null },
+        password: { isValid: true, error: null },
+        cpassword: { isValid: true, error: null },
       };
   }
 };
 
 const useAuthForm = () => {
   const [input, dispatchInput] = useReducer(inputReducer, {
-    name: { isValid: null, error: null },
-    email: { isValid: null, error: null },
-    password: { isValid: null, error: null },
-    cpassword: { isValid: null, error: null },
+    name: { isValid: true, error: null },
+    email: { isValid: true, error: null },
+    password: { isValid: true, error: null },
+    cpassword: { isValid: true, error: null },
   });
 
   return [input, dispatchInput];

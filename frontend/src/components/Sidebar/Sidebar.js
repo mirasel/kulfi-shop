@@ -9,30 +9,30 @@ function Sidebar() {
       <nav className="sidebar-menu">
         <ul className="sidebar-menu-items">
           <li className="sidebar-text">
-            <NavLink to={`${url}/kulfis`}>
+            <NavLink activeClassName="sideActive" to={`${url}/kulfis`}>
               <span>All Kulfis</span>
             </NavLink>
           </li>
           <li className="sidebar-text">
-            <NavLink to={`${url}/addkulfi`}>
+            <NavLink activeClassName="sideActive" to={`${url}/addkulfi`}>
               <span>Add Kulfi</span>
             </NavLink>
           </li>
           <li className="sidebar-text">
-            <NavLink to={`${url}/categories`}>
+            <NavLink activeClassName="sideActive" to={`${url}/categories`}>
               <span>All categories</span>
             </NavLink>
           </li>
           <li className="sidebar-text">
-            <NavLink to={`${url}/addcategory`}>
+            <NavLink activeClassName="sideActive" to={`${url}/addcategory`}>
               <span>Add category</span>
             </NavLink>
           </li>
-          <li className="sidebar-text">
-            <NavLink to={`${url}/orders`}>
+          {/* <li className="sidebar-text">
+            <NavLink activeClassName="sideActive" to={`${url}/orders`}>
               <span>All Orders</span>
             </NavLink>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </React.Fragment>
