@@ -3,6 +3,7 @@ import useApi from "../../hook/useApi";
 import { getKulfiToUpdate } from "../../common/backendApi";
 import { useParams } from "react-router-dom";
 import UpdateKulfiForm from "./UpdateKulfiForm";
+import Spin from "../../components/UI/Loading/Spin";
 
 function UpdateKulfi() {
   const { status, data, sendRequest } = useApi(getKulfiToUpdate);
@@ -30,13 +31,22 @@ function UpdateKulfi() {
   }, [status]);
   return (
     <React.Fragment>
+      {!infoValid && (
+        <div className="loading">
+          <Spin />
+        </div>
+      )}
       {infoValid && (
-        <UpdateKulfiForm
-          id={kulfiId}
-          kulfi={kulfi}
-          defaultCategories={defaultCategories}
-          categories={categories}
-        />
+        <div className="add-kulfi">
+          <div className="add-kulfi-content">
+            <UpdateKulfiForm
+              id={kulfiId}
+              kulfi={kulfi}
+              defaultCategories={defaultCategories}
+              categories={categories}
+            />
+          </div>
+        </div>
       )}
     </React.Fragment>
   );

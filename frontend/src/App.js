@@ -17,6 +17,7 @@ import NotFound from "./pages/NotFound";
 import Order from "./pages/User/Order";
 import KulfiDetails from "./pages/Kulfi/KulfiDetails";
 import Footer from "./components/Footer/Footer";
+import Category from "./pages/Category/Category";
 
 function App() {
   const auth = useAuthContext();
@@ -27,6 +28,10 @@ function App() {
         <Navbar />
         <div className="main-div">
           <Switch>
+            <Route exact path="/category/:categoryId">
+              <Category />
+            </Route>
+
             <Route exact path="/kulfi/details/:kulfiId">
               <KulfiDetails />
             </Route>

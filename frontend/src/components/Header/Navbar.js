@@ -55,7 +55,6 @@ function Navbar() {
             <li className="nav-item">
               <NavLink
                 activeClassName="nav-link-active"
-                exact
                 to="/dashboard"
                 className="nav-links"
                 onClick={closeMobileMenu}

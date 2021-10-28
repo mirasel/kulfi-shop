@@ -94,7 +94,7 @@ class KulfiController extends Controller {
         return $this->apiResponse("$kulfi->name is deleted", null, Response::HTTP_OK, true);
     }
 
-    public function getReviewAerage($reviews) {
+    public static function getReviewAerage($reviews) {
         $ratings = [];
         foreach ($reviews as $review) {
             $ratings[] = (int)$review->rating;

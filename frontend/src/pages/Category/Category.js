@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { getKulfis } from "../common/backendApi";
-import useApi from "../hook/useApi";
+import useApi from "../../hook/useApi";
 import ReactPaginate from "react-paginate";
-import Kulfis from "./Kulfi/Kulfis";
+import Kulfis from "../Kulfi/Kulfis";
 import { GrNext, GrPrevious } from "react-icons/gr";
 import { IoEllipsisHorizontal } from "react-icons/io5";
-import { MdDoubleArrow } from "react-icons/md";
-import "./Home.scss";
-import Spin from "../components/UI/Loading/Spin";
+import "../Home.scss";
+import Spin from "../../components/UI/Loading/Spin";
+import { useParams } from "react-router-dom";
+import { getCategory } from "../../common/backendApi";
 
-function Home() {
-  const { status, data, sendRequest } = useApi(getKulfis);
+function Category() {
+  const { status, data, sendRequest } = useApi(getCategory);
+  const { categoryId } = useParams();
   useEffect(() => {
-    sendRequest();
+    sendRequest(categoryId);
   }, [sendRequest]);
 
   const [currentPageNumber, setCurrentPageNumber] = useState(0);
@@ -41,11 +42,7 @@ function Home() {
       )}
       {status === "completed" && (
         <main className="home-content">
-          <div className="welcolme">
-            <h1>Welcome to kulfizz</h1>
-            <h3>Checkout our products</h3>
-            <MdDoubleArrow />
-          </div>
+          <div className="categoryHeader">{data.category.name} Flavours</div>
           <Kulfis kulfis={items} reviews={reviews} />
           <ReactPaginate
             previousLabel={<GrPrevious />}
@@ -65,4 +62,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Category;

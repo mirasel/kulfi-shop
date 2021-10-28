@@ -105,6 +105,54 @@ export async function readCategories() {
   }
 }
 
+export async function getCategory(id) {
+  try {
+    const response = await axios.get(`${BACKEND_URL}/category/show/${id}`);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+export async function getCategoryToUpdate(id) {
+  try {
+    const response = await axios.get(`${BACKEND_URL}/category/get/${id}`);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+export async function updateCategory(userData) {
+  try {
+    const response = await axios.post(
+      `${BACKEND_URL}/category/update/${userData.id}`,
+      userData.data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userData.token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+export async function deleteCategory(userData) {
+  try {
+    const response = await axios.delete(
+      `${BACKEND_URL}/category/delete/${userData.id}`,
+      { headers: { Authorization: `Bearer ${userData.token}` } }
+    );
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export async function addKulfi(userData) {
   try {
     const response = await axios.post(

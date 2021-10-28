@@ -5,8 +5,37 @@
   align-items: center;
   margin: 0px 60px;
   min-height: 100vh;
-}
 
-.welcome {
-  background-image: url("../welcome.jpg");
+  & .welcolme {
+    display: flex;
+    height: 50vh;
+    max-height: 100vh;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    h1 {
+      color: #51b36d;
+      font-size: 70px;
+    }
+
+    h3 {
+      color: #51b36d;
+      font-size: 40px;
+    }
+
+    svg {
+      transform: rotate(90deg);
+      margin-top: 50px;
+      color: #51b36d;
+      height: 50px;
+      width: 50px;
+    }
+  }
+
+  & .categoryHeader {
+    margin-top: 20px;
+    color: #51b36d;
+    font-size: 70px;
+  }
 }

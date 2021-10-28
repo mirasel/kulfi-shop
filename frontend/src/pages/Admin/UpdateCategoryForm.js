@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { addCategory } from "../../common/backendApi";
+import { updateCategory } from "../../common/backendApi";
 import { isEmpty } from "../../common/commonFunctions";
 import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
@@ -8,16 +8,21 @@ import { useAuthContext } from "../../contextApi/authContext";
 import useApi from "../../hook/useApi";
 import "./AddCategory.scss";
 
-function AddCategory() {
+function UpdateCategoryForm(props) {
   const categoryRef = useRef();
-  const { data, message, status, error, sendRequest } = useApi(addCategory);
+  const { data, message, status, error, sendRequest } = useApi(updateCategory);
   const [nameIsValid, setNameIsValid] = useState(true);
   const [errorMsg, setErrorMsg] = useState(null);
   const auth = useAuthContext();
+
+  useEffect(() => {
+    categoryRef.current.setValue(props.category.name);
+  }, [props.category]);
+
   useEffect(() => {
     if (status === "completed") {
       categoryRef.current.setValue("");
-      toast.success("category is created");
+      toast.success(message);
     }
     if (status === "error") {
       if (error === null) {
@@ -29,10 +34,11 @@ function AddCategory() {
     }
   }, [status, data, message, error]);
 
-  const handleAddCategory = (event) => {
+  const handleUpdateCategory = (event) => {
     event.preventDefault();
     if (nameIsValid) {
       sendRequest({
+        id: props.id,
         data: { name: categoryRef.current.value() },
         token: auth.accessToken,
       });
@@ -55,8 +61,8 @@ function AddCategory() {
   return (
     <div className="add-category">
       <div className="add-category-content">
-        <h1>Add a Category</h1>
-        <form onSubmit={handleAddCategory}>
+        <h1>Update Category</h1>
+        <form onSubmit={handleUpdateCategory}>
           <Input
             id="name"
             label="Category Name"
@@ -80,4 +86,4 @@ function AddCategory() {
   );
 }
 
-export default AddCategory;
+export default UpdateCategoryForm;

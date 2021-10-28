@@ -51,10 +51,13 @@ Route::group(['prefix' => 'category'], function () {
 
     Route::group(['middleware' => ['auth:api', 'admin', 'apiVerified']], function () {
         Route::post('create', 'CategoryController@store');
+        Route::post('update/{id}', 'CategoryController@update');
+        Route::delete('delete/{id}', 'CategoryController@destroy');
     });
 
     Route::get('read', 'CategoryController@index');
     Route::get('show/{id}', 'CategoryController@show');
+    Route::get('get/{id}', 'CategoryController@getCategoryToUpdate');
 });
 
 Route::group(['prefix' => 'comment', 'middleware' => 'auth:api'], function () {

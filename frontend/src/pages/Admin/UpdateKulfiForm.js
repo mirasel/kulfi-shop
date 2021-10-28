@@ -114,8 +114,8 @@ function UpdateKulfiForm(props) {
   };
 
   return (
-    <Card className="card-width">
-      <h1>Add a Category</h1>
+    <React.Fragment>
+      <h1>Update Kulfi</h1>
       <form onSubmit={handleUpdateKulfi}>
         <Input
           id="name"
@@ -140,18 +140,17 @@ function UpdateKulfiForm(props) {
           isValid={input.price.isValid}
           ref={priceRef}
         />
-        <div className="control">
+        <div className="kulfi-image">
           <label htmlFor="kulfi_image">Kulfi Image</label>
           {imgPreview ? (
-            <div>
+            <div className="img-div">
               <img src={imgPreview} alt="Kulfi" width="200px" height="100px" />
               <FaWindowClose onClick={removeImage} />
             </div>
           ) : (
-            <FaUpload
-              className="uploadBtn"
-              onClick={() => imageRef.current.click()}
-            />
+            <div className={`uploadBtn`}>
+              <FaUpload onClick={() => imageRef.current.click()} />
+            </div>
           )}
           <input
             type="file"
@@ -161,42 +160,53 @@ function UpdateKulfiForm(props) {
             onChange={handleImageInput}
           />
         </div>
-        <div>
-          <label htmlFor="kulfi_category">Kulfi Categories</label>
-          <MultiSelect
-            options={props.categories}
-            allowSelectAll={true}
-            onChange={handleCategoryChange}
-            value={optionSelected}
-          />
+        <div className="kulfi-category">
+          <label htmlFor="kulfi_category">Categories</label>
+          <div
+            className={`category-input-div ${
+              !input.categories.isValid ? "cat-invalid" : ""
+            } `}
+          >
+            <MultiSelect
+              options={props.categories}
+              allowSelectAll={true}
+              onChange={handleCategoryChange}
+              value={optionSelected}
+            />
+          </div>
         </div>
         {status === "pending" && <DoubleRing />}
         {status !== "pending" && (
-          <div>
-            <div>
-              <p>{input.name.error && <span>{input.name.error}</span>}</p>
+          <div className="button-error-div">
+            {(!input.name.isValid ||
+              !input.description.isValid ||
+              !input.price.isValid ||
+              !input.categories.isValid) && (
+              <div className="errors">
+                <p>{input.name.error && <span>{input.name.error}</span>}</p>
 
-              <p>
-                {input.description.error && (
-                  <span>{input.description.error}</span>
-                )}
-              </p>
+                <p>
+                  {input.description.error && (
+                    <span>{input.description.error}</span>
+                  )}
+                </p>
 
-              <p>{input.price.error && <span>{input.price.error}</span>}</p>
-              <p>
-                {input.categories.error && (
-                  <span>{input.categories.error}</span>
-                )}
-              </p>
-            </div>
+                <p>{input.price.error && <span>{input.price.error}</span>}</p>
+                <p>
+                  {input.categories.error && (
+                    <span>{input.categories.error}</span>
+                  )}
+                </p>
+              </div>
+            )}
 
             <Button type="submit" onClick={handleSubmit}>
-              Add Kulfi
+              Update
             </Button>
           </div>
         )}
       </form>
-    </Card>
+    </React.Fragment>
   );
 }
 

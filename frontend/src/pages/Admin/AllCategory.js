@@ -1,37 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { getKulfis } from "../common/backendApi";
-import useApi from "../hook/useApi";
+import { readCategories } from "../../common/backendApi";
+import useApi from "../../hook/useApi";
 import ReactPaginate from "react-paginate";
-import Kulfis from "./Kulfi/Kulfis";
+import "./AllKulfi.scss";
+import CategoryList from "./CategoryList";
 import { GrNext, GrPrevious } from "react-icons/gr";
 import { IoEllipsisHorizontal } from "react-icons/io5";
-import { MdDoubleArrow } from "react-icons/md";
-import "./Home.scss";
-import Spin from "../components/UI/Loading/Spin";
+import Spin from "../../components/UI/Loading/Spin";
 
-function Home() {
-  const { status, data, sendRequest } = useApi(getKulfis);
+function AllCategory() {
+  const { status, data, sendRequest } = useApi(readCategories);
   useEffect(() => {
     sendRequest();
   }, [sendRequest]);
 
   const [currentPageNumber, setCurrentPageNumber] = useState(0);
-  const itemsPerPage = 8;
+  const itemsPerPage = 5;
   const pagesVisited = currentPageNumber * itemsPerPage;
   const pageCount =
-    status === "completed" ? Math.ceil(data.kulfis.length / itemsPerPage) : 0;
+    status === "completed" ? Math.ceil(data.length / itemsPerPage) : 0;
   const items =
     status === "completed"
-      ? data.kulfis.slice(pagesVisited, pagesVisited + itemsPerPage)
-      : [];
-  const reviews =
-    status === "completed"
-      ? data.reviews.slice(pagesVisited, pagesVisited + itemsPerPage)
+      ? data.slice(pagesVisited, pagesVisited + itemsPerPage)
       : [];
 
   const handlePageChange = ({ selected }) => {
     setCurrentPageNumber(selected);
   };
+
   return (
     <React.Fragment>
       {status === "pending" && (
@@ -40,13 +36,8 @@ function Home() {
         </div>
       )}
       {status === "completed" && (
-        <main className="home-content">
-          <div className="welcolme">
-            <h1>Welcome to kulfizz</h1>
-            <h3>Checkout our products</h3>
-            <MdDoubleArrow />
-          </div>
-          <Kulfis kulfis={items} reviews={reviews} />
+        <div className="kulfilist-content">
+          <CategoryList categories={items} />
           <ReactPaginate
             previousLabel={<GrPrevious />}
             nextLabel={<GrNext />}
@@ -59,10 +50,10 @@ function Home() {
             disabledClassName="pagination-disabled"
             activeClassName="pagination-active"
           />
-        </main>
+        </div>
       )}
     </React.Fragment>
   );
 }
 
-export default Home;
+export default AllCategory;
