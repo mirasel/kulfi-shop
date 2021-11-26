@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model {
     protected $guarded = [];
 
-    public function post() {
+    public function kulfi() {
         return $this->belongsTo(Kulfi::class);
     }
 

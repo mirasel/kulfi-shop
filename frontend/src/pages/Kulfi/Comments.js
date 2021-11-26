@@ -45,6 +45,9 @@ function Comments(props) {
     if (!auth.isLoggedIn) {
       history.push("/login");
     }
+    if (!auth.user.isVerified) {
+      history.push("/email/verify");
+    }
     if (commentValid) {
       sendRequest({
         data: {

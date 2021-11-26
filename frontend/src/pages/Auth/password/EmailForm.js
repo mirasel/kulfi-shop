@@ -18,6 +18,7 @@ function EmailForm() {
   useEffect(() => {
     if (status === "completed") {
       toast.success(message);
+      emailRef.current.setValue("");
     }
     if (status === "error") {
       setEmailIsValid(false);
